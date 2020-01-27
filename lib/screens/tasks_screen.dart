@@ -1,37 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_flutter/models/task_data.dart';
 import 'package:todoey_flutter/widget/tasks_list.dart';
 import 'package:todoey_flutter/screens/add_task_screen.dart';
 import 'package:todoey_flutter/models/task.dart';
 
-class TasksScreen extends StatefulWidget {
-  @override
-  _TasksScreenState createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'Flutter Course'),
-    Task(name: 'Research Gamification App'),
-    Task(name: 'Buat Insight Artikel'),
-  ];
-
+class TasksScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.lightBlueAccent,
       floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.lightBlueAccent,
-          child: Icon(Icons.add),
-          onPressed: () {
-            showModalBottomSheet(
-                context: context,
-                builder: (context) => AddTaskScreen((newTaskTitle) {
-                      setState(() {
-                        tasks.add(Task(name: newTaskTitle));
-                      });
-                      Navigator.pop(context);
-                    }));
-          }),
+        backgroundColor: Colors.lightBlueAccent,
+        child: Icon(Icons.add),
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => AddTaskScreen(),
+          );
+        },
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -66,7 +54,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   ),
                 ),
                 Text(
-                  '${tasks.length} Task',
+                  '${Provider.of<TaskData>(context).taskCount} Task',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -87,9 +75,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   topRight: Radius.circular(18),
                 ),
               ),
-              child: TasksList(
-                tasks: this.tasks,
-              ),
+              child: TasksList(),
             ),
           ),
         ],
